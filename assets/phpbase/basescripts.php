@@ -1,5 +1,9 @@
 <?php
 
+const HOST = "mysql:dbname=fantacalcio;host=localhost";
+const USER = "root";
+const PASSWORD = "mdacourse";
+
 $head = "
     <head>
         <meta charset='utf-8'>
@@ -35,6 +39,9 @@ $navbar = "
                 </li>
                 <li class='nav-item'>
                     <a class='nav-link' href='#'>Classifica</a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link logout' href='logout.php'>Esci</a>
                 </li>
             </ul>
         </div>
