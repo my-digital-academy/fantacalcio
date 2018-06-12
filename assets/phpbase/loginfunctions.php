@@ -8,7 +8,6 @@
             $user_browser = $_SERVER['HTTP_USER_AGENT'];
             $_SESSION['utente'] = $utente;
             $_SESSION['login_string'] = hash('sha512', $password.$user_browser);
-            var_dump($_SESSION);
             return true;
         }
         else{

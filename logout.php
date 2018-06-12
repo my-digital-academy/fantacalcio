@@ -1,5 +1,6 @@
 <?php
-  include('master.php');
+
+    include_once('assets/phpbase/loginfunctions.php');
 
    if(isset($_SESSION['login_string'])){
     // Elimina tutti i valori della sessione.

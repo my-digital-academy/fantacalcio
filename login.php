@@ -1,5 +1,6 @@
 <?php
-    include_once('master.php');
+    include_once("assets/phpbase/loginfunctions.php");
+    include_once("assets/phpbase/basescripts.php");
     
     if(login_check()){
         header("location: index.php");
@@ -40,6 +41,7 @@
 
     }
 
+    echo $head;
     echo $form;
 
     
