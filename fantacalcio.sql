@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.7.7
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Creato il: Giu 11, 2018 alle 14:39
--- Versione del server: 5.7.22-0ubuntu0.16.04.1
--- Versione PHP: 7.0.30-0ubuntu0.16.04.1
+-- Host: localhost:8889
+-- Creato il: Giu 12, 2018 alle 07:23
+-- Versione del server: 5.6.38
+-- Versione PHP: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -92,9 +92,16 @@ CREATE TABLE `tesserati` (
 CREATE TABLE `utenti` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(15) NOT NULL,
+  `password` char(32) NOT NULL,
   `timestamp` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `utenti`
+--
+
+INSERT INTO `utenti` (`id`, `username`, `password`, `timestamp`) VALUES
+(1, 'mdacourse', 'de2f15d014d40b93578d255e6221fd60', NULL);
 
 --
 -- Indici per le tabelle scaricate
@@ -150,31 +157,37 @@ ALTER TABLE `utenti`
 --
 ALTER TABLE `calciatori`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT per la tabella `formazioni`
 --
 ALTER TABLE `formazioni`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT per la tabella `giornate`
 --
 ALTER TABLE `giornate`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT per la tabella `squadre`
 --
 ALTER TABLE `squadre`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT per la tabella `tesserati`
 --
 ALTER TABLE `tesserati`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- Limiti per le tabelle scaricate
 --

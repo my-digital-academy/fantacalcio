@@ -14,14 +14,14 @@ function secure_session_start() {
 	session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
 }
 
-trait connessione{
-    public function connetti(){
+trait connection{
+    static function connetti(){
         return new PDO(HOST, USER, PASSWORD);
     }
 }
 
 class utenti {
-    use connessione;
+    use connection;
 
     /*<<<DECLARATIONS */
 
@@ -30,8 +30,9 @@ class utenti {
     private $password;
 
     private function setAll($arr_utente){
-        $this->username = $arr_utente['username'];
-        $this->password = $arr_utente['password'];
+        $this->setId($arr_utente['id']);
+        $this->setUsername($arr_utente['username']);
+        $this->setPassword($arr_utente['password']);
     }
 
     public function getId(){
@@ -81,7 +82,53 @@ class utenti {
 }
 
 class squadre {
+    use connection;
     
+    private $id;
+    private $nome;
+    private $utente;
+
+    private function setAll($arr_squadra){
+        $this->setId($arr_squadra['id']);
+        $this->setNome($arr_squadra['nome']);
+        $id_utente = (int)$arr_squadra['id_utente'];
+        $this->setUtente($id_utente);
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    private function setId($id){
+        $this->id = $id;
+    }
+
+    public function getNome(){
+        return $this->nome;
+    }
+
+    private function setNome($nome){
+        $this->nome = $nome;
+    }
+
+    public function getUtente(){
+        return $this->utente;
+    }
+
+    private function setUtente($id){
+        $this->utente = utenti::selectUtente($id);
+    }
+
+    static function selectSquadra($id_utente){
+        $pdo = self::connetti();
+        $select = "SELECT * FROM squadre s JOIN utenti u ON s.id_utente = u.id WHERE s.id_utente='" . $id_utente . "'";
+        $stmt = $pdo->query($select);
+        $stmt->execute();
+        $squadra = new squadre();
+        $squadra->setAll($stmt->fetch(PDO::FETCH_ASSOC));
+        return $squadra;
+    }
+
 }
 
 class calciatori {

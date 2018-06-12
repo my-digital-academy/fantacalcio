@@ -7,32 +7,19 @@
 
     $form ="
         <div class='container'>
-            <form class='col-6 offset-3' action='login.php' method='POST'>
+            <form class='col-6 offset-3' action='login.php' id='login-form' method='POST'>
                 <h1>Login</h1>
                 <div class='form-group'>
                     <label for='username'>Username</label>
-                    <input type='text' class='form-control' id='username' name='username' aria-describedby='emailHelp' placeholder='username...'>
+                    <input type='text' class='form-control' name='username' aria-describedby='emailHelp' autocomplete='off' placeholder='username...'>
                 </div>
                 <div class='form-group'>
                     <label for='password'>Password</label>
-                    <input type='password' class='form-control' id='password' name='password' placeholder='password...'>
+                    <input type='password' class='form-control' name='password' placeholder='password...'>
                 </div>
                 <button type='submit' class='btn btn-primary'>Accedi</button>
             </form>
-    ";
-
-    $script = "
-        <script>
-            let form = document.getElementsByTagName('form')[0];
-            document.addEventListener('DOMContentLoaded', function(event) {
-                form.addEventListener('submit', function(e){
-                    e.preventDefault();
-                    if(validateForm(form) == 'true'){
-
-                    }
-                });
-            });
-        </script>
+            <p class='error-message'></p>
     ";
 
     if(isset($_POST['username'], $_POST['password']) && $_POST['username']!="" && $_POST['password']!=""){
@@ -46,15 +33,13 @@
             header("location: index.php");
         }
         else{
-            $form .= "<p class='col-6 offset-3 error-message fade'>Username o Password errati</p></div>";
+
         }
     } 
     else{
-        $form .= "<p class='col-6 offset-3 error-message'></p></div>";
+
     }
 
     echo $form;
-
-    echo $script;
 
     

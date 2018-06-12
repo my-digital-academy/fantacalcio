@@ -1,13 +1,17 @@
 .error-message{
     color: red;
-    font-size: 28px;
     opacity: 0;
     text-align: center;
 }
-.error-message.fade{
-    opacity: 1;
-    transition: .5s all ease-in-out;
+.error-border{
+    border: 1px solid red;
+    opacity: 0;
 }
+.fade-in{
+    opacity: 1;
+    transition: .5s all ease-in;
+}
+
 .logout{
     color: red!important;
 }
