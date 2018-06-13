@@ -1,6 +1,9 @@
 <?php
 
+    include_once("assets/phpbase/session.php");
     include_once('assets/phpbase/loginfunctions.php');
+
+    secure_session_start();
 
    if(isset($_SESSION['login_string'])){
     // Elimina tutti i valori della sessione.
@@ -16,7 +19,7 @@
     //exit;
   }
   else{
-    echo "ciao";
+    
   }
 ?>
   </body>
