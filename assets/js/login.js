@@ -1,21 +1,36 @@
 document.addEventListener('DOMContentLoaded', function(e){
-    Form();
+    formValidation();
 });
 
-var Form = function (){
+var formValidation = function (){
     let form = document.querySelector('#login-form');
     let userInput = document.querySelector("input[name=username]");
     let passInput = document.querySelector("input[name=password]");
     let valid = [false,false];
 
     form.addEventListener('submit', function(e){
-        let message = document.querySelector('.error-message');
-        if(validate()==false){
-            e.preventDefault();
-            message.textContent = 'Riempi tutti i campi';
-            message.classList.add('fade-in');
-        } 
+        //Prevent default to validate form
+        e.preventDefault();
+        //Lost focus in all inputs for handling their validation events
+        userInput.blur();
+        passInput.blur();
+        //Call to validate() and check if form is validated
+        if(!validate()){
+            //Call fillErrorMessage() to show error message
+            fillErrorMessage("Riempi tutti i campi");
+        }
+        else{
+            //Send data as JSON to login.php page and
+            //retrieve received response with receiveLogin()
+            let json = {
+                username: userInput.value,
+                password: passInput.value,
+            };
+            //Call AJAX function and send JSON to form.action page
+            ajaxCall(form.action,JSON.stringify(json),receiveLogin);
+        }
     });
+    //Event listener that validate single input
     userInput.addEventListener('blur',function(){
         if(userInput.value == ''){
             userInput.classList.add('error-border');
@@ -28,6 +43,7 @@ var Form = function (){
             valid[0] = true;
         }
     });
+    //Event listener that validate single input
     passInput.addEventListener('blur',function(){
         if(passInput.value == ''){
             passInput.classList.add('error-border');
@@ -40,7 +56,7 @@ var Form = function (){
             valid[1] = true;
         }
     });
-
+    //Function that validate all input forms
     function validate(){
         for (let i = 0; i < valid.length; i++) {
             if(valid[i] == false){
@@ -49,4 +65,20 @@ var Form = function (){
         }
         return true;
     }
+    //Callback of AJAX call
+    function receiveLogin(data){
+        if(data == "ok"){
+            window.location.replace("index.php");
+        }
+        else if(data == "errore"){
+            fillErrorMessage("Username o password errati");
+        }
+    }
+    //Function that show error messages
+    function fillErrorMessage(msg){
+        let message = document.querySelector(".error-message");
+        message.textContent = msg;
+        message.classList.add("fade-in");
+    }
 }
+

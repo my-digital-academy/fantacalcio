@@ -2,7 +2,7 @@
 
 const HOST = "mysql:dbname=fantacalcio;host=localhost";
 const USER = "root";
-const PASSWORD = "root";
+const PASSWORD = "grego27081946";
 
 $head = "
     <head>
@@ -14,6 +14,7 @@ $head = "
         <script src='https://code.jquery.com/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous'></script>
         <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js'></script>
         <script src='assets/js/login.js'></script>
+        <script src='assets/js/functions.js'></script>
     </head>
 ";
 

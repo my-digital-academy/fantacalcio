@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
+        <title>Fantamondiale</title>
+        <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css' />
+        <link rel='stylesheet' href='assets/css/style.css' />
+        <script src='https://code.jquery.com/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous'></script>
+        <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js'></script>
+        <script src='assets/js/login.js'></script>
+        <script src='assets/js/functions.js'></script>
+    </head>
+</head>
+<body>
+    <div class='container'>
+        <form class='col-6 offset-3' action='login.php' id='login-form' method='POST'>
+            <h1>LOGIN</h1>
+            <div class='form-group'>
+                <label for='username'>Username</label>
+                <input type='text' class='form-control' name='username' aria-describedby='emailHelp' autocomplete='off' placeholder='username...'>
+            </div>
+            <div class='form-group'>
+                <label for='password'>Password</label>
+                <input type='password' class='form-control' name='password' placeholder='password...'>
+            </div>
+            <button type='submit' class='btn btn-primary col-12'>Accedi</button>
+            <p class='error-message'></p>
+        </form>
+</body>
+</html>

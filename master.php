@@ -6,7 +6,7 @@
     secure_session_start();
 
     if(!login_check()){
-        header("location: login.php");
+        header("location: login.html");
     }
 
     echo $head;

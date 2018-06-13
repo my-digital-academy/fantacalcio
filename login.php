@@ -6,44 +6,33 @@
     secure_session_start();
     
     if(login_check()){
-        header("location: index.php");
+       header("location: index.php");
     }
 
-    $form ="
-        <div class='container'>
-            <form class='col-6 offset-3' action='login.php' id='login-form' method='POST'>
-                <h1>Login</h1>
-                <div class='form-group'>
-                    <label for='username'>Username</label>
-                    <input type='text' class='form-control' name='username' aria-describedby='emailHelp' autocomplete='off' placeholder='username...'>
-                </div>
-                <div class='form-group'>
-                    <label for='password'>Password</label>
-                    <input type='password' class='form-control' name='password' placeholder='password...'>
-                </div>
-                <button type='submit' class='btn btn-primary'>Accedi</button>
-            </form>
-            <p class='error-message'></p>
-    ";
+    // Get JSON as a string
+    $json_str = file_get_contents('php://input');
+    // Get as an object
+    $json_obj = json_decode($json_str,true);
 
-    if(isset($_POST['username'], $_POST['password']) && $_POST['username']!="" && $_POST['password']!=""){
-        $user = (string)$_POST['username'];
-        $pass = (string)$_POST['password'];
+    $response = "";
+    
+    if(isset($json_obj['username'], $json_obj['password']) && $json_obj['username']!="" && $json_obj['password']!=""){
+        $user = (string)$json_obj['username'];
+        $pass = (string)$json_obj['password'];
 
         if(login($user,$pass)){
-            header("location: index.php");
+            $response = "ok";
         }
         elseif(isset($_SESSION['login_string'])){
-            header("location: index.php");
+            $response = "ok";
         }
         else{
-
+            $response = "errore";
         }
+        echo $response;
     } 
     else{
-
+        echo "errore";
     }
-    echo $head;
-    echo $form;
 
     
