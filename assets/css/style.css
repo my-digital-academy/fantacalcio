@@ -1,3 +1,76 @@
+/*-------------------GENERALE--------------*/
+
+body,
+html {
+    font-family: 'Lato', sans-serif;
+    color: #3e3e3e;
+}
+
+
+/*------------------HEADER--------------*/
+
+.logo-fanta {
+    width: 80px;
+    height: auto;
+}
+
+.nav-fanta {
+    background-color: #0b5f91;
+}
+
+.nav-fanta-item a:link,
+.nav-fanta-item a:visited {
+    color: #fff;
+    font-weight: 700;
+}
+
+.nav-fanta-item a:hover,
+.nav-fanta-item a:active {
+    color: #94090D;
+}
+
+.navbar-toggler i {
+    color: #fff;
+}
+
+/*------------------HOME----------------*/
+
+.home h3 {
+    text-align: center;
+}
+
+.home h3::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #0b5f91;
+    margin: 20px 0;
+}
+
+.home h4 {
+    margin-top: 25px;
+}
+
+.home h4::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #0b5f91;
+    margin: 10px 0;
+}
+
+.btn-fanta {
+    background-color: #0b5f91;
+    color: #fff;
+}
+
+
+
+
+/*------------------LOGIN----------------*/
+
 .error-message{
     color: red;
     opacity: 0;

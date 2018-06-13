@@ -9,4 +9,3 @@
         header("location: login.html");
     }
 
-    echo $head;
