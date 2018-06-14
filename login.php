@@ -1,7 +1,7 @@
 <?php
     include_once("assets/phpbase/session.php");
     include_once("assets/phpbase/loginfunctions.php");
-    include_once("assets/phpbase/basescripts.php");
+    include_once("assets/phpbase/utils.php");
 
     secure_session_start();
     

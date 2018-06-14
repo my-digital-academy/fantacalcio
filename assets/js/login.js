@@ -8,6 +8,9 @@ var formValidation = function (){
     let passInput = document.querySelector("input[name=password]");
     let valid = [false,false];
 
+    //Focus user input
+    userInput.focus();
+
     form.addEventListener('submit', function(e){
         //Prevent default to validate form
         e.preventDefault();
@@ -72,6 +75,9 @@ var formValidation = function (){
         }
         else if(data == "errore"){
             fillErrorMessage("Username o password errati");
+        }
+        else{
+            alert(data);
         }
     }
     //Function that show error messages

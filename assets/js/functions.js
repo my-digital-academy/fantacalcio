@@ -6,7 +6,7 @@ function ajaxCall(url,data,callback){
         }
       };
     xhttp.open("POST", url, true);
-    xhttp.setRequestHeader('Content-type', 'application/json');
+    xhttp.setRequestHeader('Content-type', 'application/json', 'charset=utf-8');
     xhttp.send(data);
 }
 

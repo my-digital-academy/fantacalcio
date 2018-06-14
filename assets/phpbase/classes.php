@@ -1,6 +1,6 @@
 <?php
 
-include_once("basescripts.php");
+include_once("utils.php");
 
 trait connection{
     static function connetti(){
@@ -8,8 +8,16 @@ trait connection{
     }
 }
 
-class utenti {
+class utenti implements \JsonSerializable{
     use connection;
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
+
 
     /*<<<DECLARATIONS */
 
@@ -69,18 +77,23 @@ class utenti {
     /*METHODS>>>*/
 }
 
-class squadre {
+class squadre implements \JsonSerializable{
     use connection;
     
     private $id;
     private $nome;
-    private $utente;
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
 
     private function setAll($arr_squadra){
         $this->setId($arr_squadra['id']);
         $this->setNome($arr_squadra['nome']);
         $id_utente = (int)$arr_squadra['id_utente'];
-        $this->setUtente($id_utente);
     }
 
     public function getId(){
@@ -97,14 +110,6 @@ class squadre {
 
     private function setNome($nome){
         $this->nome = $nome;
-    }
-
-    public function getUtente(){
-        return $this->utente;
-    }
-
-    private function setUtente($id){
-        $this->utente = utenti::selectUtente($id);
     }
 
     static function selectSquadra($id_utente){
@@ -133,4 +138,38 @@ class formazioni {
 
 class tesserati {
     
+}
+
+class JSON {
+    use connection;
+
+    private $utente;
+    private $squadra;
+    private $json = [];
+
+
+    private function setUtente($id){
+        $this->utente = utenti::selectUtente($id);
+    }
+    
+    private function setSquadra($id){
+        $this->squadra = squadre::selectSquadra($id);
+    }
+
+    private function setJson(){
+        $this->json['utente'] = $this->utente;
+        $this->json['squadra'] = $this->squadra;
+    }
+
+    private function setObj($id){
+        $this->setUtente($id);
+        $this->setSquadra($id);
+        $this->setJson();
+    }
+
+    public function getJson($id){
+        $this->setObj($id);
+        var_dump($this->json);
+        return json_encode($this->json);
+    }
 }

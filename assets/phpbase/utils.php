@@ -1,6 +1,6 @@
 <?php
 
 const HOST = "mysql:dbname=fantacalcio;host=localhost";
-const USER = "admin";
-const PASSWORD = "admin";
+const USER = "root";
+const PASSWORD = "root";
 
