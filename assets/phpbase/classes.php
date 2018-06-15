@@ -179,12 +179,12 @@ class calciatori implements \jsonSerializable{
         return $lista;
     }
 
-    static function selectSchierati($id_giornata,$id_squadra){
+    static function selectSchierati($id_giornata,$id_utente){
         $lista = [];
         $pdo = self::connetti();
-        $select = "SELECT * FROM formazioni f JOIN tesserati t ON f.id_calciatore = t.id_calciatore 
-                    JOIN calciatori c ON f.id_calciatore = c.id JOIN squadre s ON t.id_squadra = s.id 
-                    WHERE f.id_giornata =" .$id_giornata ." AND s.id =" . $id_squadra;
+        $select = "SELECT c.* FROM formazioni f JOIN tesserati t ON f.id_calciatore = t.id_calciatore 
+                    JOIN calciatori c ON f.id_calciatore = c.id JOIN squadre s ON t.id_squadra = s.id JOIN
+                    utenti u ON s.id_utente = u.id WHERE f.id_giornata =" .$id_giornata ." AND u.id =" . $id_utente;
         $stmt = $pdo->query($select);
         if($stmt->execute()){
             $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "calciatori");
@@ -210,7 +210,7 @@ class giornate implements \jsonSerializable{
         return $vars;
     }
 
-    private function set($value){
+    private function setId($value){
         $this->id = $value;
     }
 
@@ -222,13 +222,24 @@ class giornate implements \jsonSerializable{
         $this->numero = $value;
     }
 
-    static function selectGiornate(){
+    private function setFormazione($value){
+        $this->formazione = $value;
+    }
+
+    static function selectGiornate($id_utente){
         $lista = [];
         $pdo = self::connetti();
-        $select = "SELECT * FROM giornate g JOIN formazioni f ON g.id = f.id_giornata WHERE g.id=1";
+        $select = "SELECT * FROM giornate";
         $stmt = $pdo->query($select);
         if($stmt->execute()){
-            $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "giornate");
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $giornata = new giornate();
+                $giornata->setId($row['id']);
+                $giornata->setData($row['data']);
+                $giornata->setNumero($row['numero']);
+                $giornata->setFormazione(calciatori::selectSchierati($row['id'],$id_utente));
+                $lista[] = $giornata;
+            }
         }
         return $lista;
     }
@@ -243,34 +254,33 @@ class JSON {
     private $json = [];
 
 
-    private function setUtente($id){
-        $this->utente = utenti::selectUtente($id);
+    private function setUtente($id_utente){
+        $this->utente = utenti::selectUtente($id_utente);
     }
     
-    private function setSquadra($id){
-        $this->squadra = squadre::selectSquadra($id);
+    private function setSquadra($id_utente){
+        $this->squadra = squadre::selectSquadra($id_utente);
     }
 
-    private function setGiornate(){
-        $this->giornate = giornate::selectGiornate();
+    private function setGiornate($id_utente){
+        $this->giornate = giornate::selectGiornate($id_utente);
     }
 
     private function setJson(){
         $this->json['utente'] = $this->utente;
         $this->json['squadra'] = $this->squadra;
-        var_dump($this->giornate);
         $this->json['giornate'] = $this->giornate;
     }
 
-    private function setObj($id){
-        $this->setUtente($id);
-        $this->setSquadra($id);
-        $this->setGiornate();
+    private function setObj($id_utente){
+        $this->setUtente($id_utente);
+        $this->setSquadra($id_utente);
+        $this->setGiornate($id_utente);
         $this->setJson();
     }
 
-    public function getJson($id){
-        $this->setObj($id);
+    public function getJson($id_utente){
+        $this->setObj($id_utente);
         return json_encode($this->json, JSON_PRETTY_PRINT);
     }
 }
