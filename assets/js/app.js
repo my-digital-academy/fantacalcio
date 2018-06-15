@@ -1,112 +1,159 @@
  /**
   * 
   * 
-  * modulo Render
+  * render module
   * 
   * 
 */
-var Render = function(api) {
+var Render = function() {
+    // select tag main
+    var main = document.querySelector('main');
     
-    var formHome = api.formHome;
-    var displayHome = api.displayHome;
-
     return {
-        formSquadra: function() {
-            var colForm = document.getElementById('colForm');
-            // h3
-            var h3 = document.createElement('h3');
-            h3.textContent = formHome.section.title;
-            // form squadra
-            var formS = document.createElement('form');
-            formS.setAttribute('action', formHome.data.formSquadra.action);
-            formS.setAttribute('id', 'formSquadra');
-            var labelS = document.createElement('label');
-            labelS.classList.add('col-form-label');
-            labelS.textContent = formHome.data.formSquadra.input.label;
-            var inputS = document.createElement('input');
-            inputS.classList.add('form-control');
-            inputS.setAttribute('type', formHome.data.formSquadra.input.type);
-            inputS.setAttribute('id', 'squadra');
-            var buttonS = document.createElement('button');
-            buttonS.classList.add('btn', 'btn-fanta', 'mt-4');
-            buttonS.textContent = formHome.data.formSquadra.button;
-            //h4
-            var h4 = document.createElement('h4');
-            h4.textContent = formHome.data.subTitle;
-            // form giocatore
-            var formG = document.createElement('form');
-            formG.setAttribute('action', formHome.data.formGiocatore.action);
-            formG.setAttribute('id', 'formGiocatore');
-            for (var i = 0; i < formHome.data.formGiocatore.input.length; i++) {
-                var label = document.createElement('label');
-                label.classList.add('col-form-label');
-                label.textContent = formHome.data.formGiocatore.input[i].label;
-                var input = document.createElement('input');
-                input.classList.add('form-control');
-                input.setAttribute('type', formHome.data.formGiocatore.input[i].type);
-                // append
-                formG.appendChild(label);
-                formG.appendChild(input);
-            }
-            // button
-            var buttonG = document.createElement('button');
-            buttonG.classList.add('btn', 'btn-fanta', 'mt-4');
-            buttonG.textContent = formHome.data.formGiocatore.button;
-            // 
-            colForm.appendChild(h3);
-            colForm.appendChild(formS);
-            formS.appendChild(labelS);
-            formS.appendChild(inputS);
-            formS.appendChild(buttonS);
-            colForm.appendChild(h4);
-            colForm.appendChild(formG);
-            formG.appendChild(buttonG);
+        homePage: function() {
+            main.innerHTML = `
+            <div class="container-fluid py-4">
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-column home">
+                        <h3>Crea la tua squadra</h3>
+                        <form action="#" id="formTeam">
+                            <label class="col-form-label">Nome della squadra</label>
+                            <input class="form-control" type="text" id="nameTeam">
+                        </form>
+                        <h4>Inserisci giocatore</h4>
+                        <form action="#" id="formPlayer">
+                            <label class="col-form-label">Nome</label>
+                            <input class="form-control" type="text" id="namePlayer" disabled>
+                            <label class="col-form-label">Cognome</label>
+                            <input class="form-control" type="text" id="surnamePlayer" disabled>
+                            <label class="col-form-label">Ruolo</label>
+                            <select class="form-control" name="role" id="rolePlayer" disabled>
+                                <option name="role">Portiere</option>
+                                <option name="role">Difensore</option>
+                                <option name="role">Centrocampista</option>
+                                <option name="role">Attaccante</option>
+                            </select>
+                            <button class="btn btn-block btn-fanta mt-4">Aggiungi</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column" id="recordTeam">
+                        <h3></h3>
+                        <div>
+                            <ul class="list-group list-group-flush list-player">
 
-        },
-
-        displaySquadra: function() {
-            var colRegistrazione = document.getElementById('colRegistrazione');
-            // h3
-            var h3 = document.createElement('h3');
-            h3.setAttribute('id', 'nomeSquadra');
-            h3.textContent = displayHome.section.title;
-            // append
-            colRegistrazione.appendChild(h3);
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
         }
     }
-}(api);
+};
 
 
 /**
  * 
  * 
- *  modulo editor
+ * editor module
  * 
  * 
  */
-var Editor = (function(api, Render) {
-
+var Editor = function() {
+    var tesserati = [];
+    var player;
 
     return {
+        getNameTeam: function() {
+            // select input value
+            var nameTeam = document.getElementById('nameTeam');
+            // select h3
+            var h3 = document.querySelector('#recordTeam h3');
+            // add value
+            h3.textContent = `${nameTeam.value}`;
+        },
 
+        getPlayer: function(player) {
+            // select list player
+            var listPlayer = document.querySelector('.list-player');
+            // push array 
+            tesserati.push(player);
+            for (var i = 0; i < tesserati.length; i++) {
+                player = `
+                <li class="list-group-item">
+                    <div class="d-flex align-items-center player-full-name">
+                        <i class="fas fa-user-tie fa-2x"></i>
+                        <p>${tesserati[i].cognome} ${tesserati[i].nome}</p>
+                    </div>
+                    <div class="d-flex align-items-center player-role">
+                        <i class="fas fa-futbol fa-2x"></i>
+                        <p>${tesserati[i].posizione}</p>
+                    </div>
+                </li>
+                `;
+            }
+            listPlayer.innerHTML += player;
+        }
     }
-})(api, Render);
+};
 
 
 /**
  * 
  * 
- * modulo app
+ * app module
  * 
  * 
 */
-var App = (function(Render) {
+var App = (function() {
     document.addEventListener('DOMContentLoaded', function() {
-        
-        Render.formSquadra();
-        Render.displaySquadra();
 
+        // instance Render
+        var render = Render();
+        var editor = Editor();
 
+        // render home page
+        render.homePage();
+
+        // event form name team
+        var formTeam = document.getElementById('formTeam');
+        var formInputDisabled = document.querySelectorAll('#formPlayer input');
+        var formSelectDisabled = document.querySelector('#formPlayer select');
+        formTeam.addEventListener('keyup', function(e) {
+            // select element
+            var recordTeam = document.getElementById('recordTeam');
+            // add class
+            recordTeam.classList.add('home-record');
+            // editor home page
+            editor.getNameTeam();
+            for (var i = 0; i < formInputDisabled.length; i++) {
+                formInputDisabled[i].removeAttribute('disabled');
+            }
+            formSelectDisabled.removeAttribute('disabled');
+            if (e.target.value == '') {
+                recordTeam.classList.remove('home-record');
+                for (var i = 0; i < formInputDisabled.length; i++) {
+                formInputDisabled[i].setAttribute('disabled', '');
+                }
+                formSelectDisabled.setAttribute('disabled', '');
+            }
+        });
+
+        //event form player
+        var formPlayer = document.getElementById('formPlayer')
+        formPlayer.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // select input value
+            var namePlayer = document.getElementById('namePlayer');
+            var surnamePlayer = document.getElementById('surnamePlayer');
+            var role = document.getElementById('rolePlayer');
+            // create obj player
+            var player = {};
+            // add value
+            player.cognome = surnamePlayer.value;
+            player.nome = namePlayer.value;
+            player.posizione = role.value;
+            editor.getPlayer(player);
+        });
     });
-
-})(Render, Editor);
+})();

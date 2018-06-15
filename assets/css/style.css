@@ -6,6 +6,9 @@ html {
     color: #3e3e3e;
 }
 
+button:focus {
+    box-shadow: none !important;
+}
 
 /*------------------HEADER--------------*/
 
@@ -22,15 +25,21 @@ html {
 .nav-fanta-item a:visited {
     color: #fff;
     font-weight: 700;
+    margin-right: 50px;
+    font-size: 1.2rem;
 }
 
 .nav-fanta-item a:hover,
 .nav-fanta-item a:active {
-    color: #94090D;
+    color: #b30506;
 }
 
 .navbar-toggler i {
     color: #fff;
+}
+
+.navbar-nav li {
+    padding-right: 20px;
 }
 
 /*------------------HOME----------------*/
@@ -61,23 +70,53 @@ html {
     margin: 10px 0;
 }
 
-.btn-fanta {
+.home-record h3 {
+    text-align: center;
+}
+
+.home-record h3::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #b30506;
+    margin: 20px 0;
+}
+
+.btn-fanta{
     background-color: #0b5f91;
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 10px;
+}
+
+.btn-fanta:hover {
+    background-color: #b30506;
     color: #fff;
 }
 
+.form-control {
+    box-shadow: none !important;
+}
 
+.form-control:focus {
+    border: 2px solid #b30506 !important;
+}
 
+.list-player p {
+    margin: 0;
+    padding: 15px;
+}
 
 /*------------------LOGIN----------------*/
 
 .error-message{
-    color: red;
+    color: #b30506;
     opacity: 0;
     text-align: center;
 }
 .error-border{
-    border: 1px solid red;
+    border: 1px solid #b30506;
     opacity: 0;
 }
 .fade-in{
@@ -86,7 +125,7 @@ html {
 }
 
 .logout{
-    color: red!important;
+    color: #b30506!important;
 }
 
 #login-form{
