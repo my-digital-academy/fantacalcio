@@ -22,16 +22,12 @@ var Render = function() {
                         </form>
                         <h4>Inserisci giocatore</h4>
                         <form action="#" id="formPlayer">
-                            <label class="col-form-label">Nome</label>
-                            <input class="form-control" type="text" id="namePlayer" disabled>
-                            <label class="col-form-label">Cognome</label>
-                            <input class="form-control" type="text" id="surnamePlayer" disabled>
-                            <label class="col-form-label">Ruolo</label>
+                            <label class="col-form-label">Calciatore</label>
                             <select class="form-control" name="role" id="rolePlayer" disabled>
-                                <option name="role">Portiere</option>
-                                <option name="role">Difensore</option>
-                                <option name="role">Centrocampista</option>
-                                <option name="role">Attaccante</option>
+                                <option>Portiere</option>
+                                <option>Difensore</option>
+                                <option>Centrocampista</option>
+                                <option>Attaccante</option>
                             </select>
                             <button class="btn btn-block btn-fanta mt-4" id="addPlayer">Aggiungi</button>
                         </form>
@@ -189,8 +185,12 @@ var App = (function() {
             if (saveTeam) {
                 saveTeam.addEventListener('click', function() {
                     var team = editor.getTeam();
-                    ajaxCall('json.php', JSON.stringify(team), render.homePagePost);
-                    console.log(team);
+                    ajaxCall('prove.php', JSON.stringify(team), scrivi);
+                    
+
+                    function scrivi(a){
+                        console.log(a);
+                    }
                 });
             }
         });

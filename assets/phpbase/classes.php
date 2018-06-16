@@ -121,13 +121,34 @@ class squadre implements \JsonSerializable{
 
     static function selectSquadra($id_utente){
         $pdo = self::connetti();
-        $select = "SELECT s.* FROM squadre s JOIN utenti u ON s.id_utente = u.id WHERE s.id_utente='" . $id_utente . "'";
-        $stmt = $pdo->query($select);
+        $select = "SELECT s.* FROM squadre s JOIN utenti u ON s.id_utente = u.id WHERE s.id_utente=:id_utente";
+        $stmt = $pdo->prepare($select);
+        $stmt->bindParam(":id_utente",$id_utente,PDO::PARAM_INT);
         $stmt->execute();
         $squadra = new squadre();
         $squadra->setAll($stmt->fetch(PDO::FETCH_ASSOC));
         return $squadra;
     }
+    static function insertSquadra($nome,$id_utente,$calciatori){
+        $pdo = self::connetti();
+        $insertTeam = "INSERT INTO squadre(nome,id_utente) VALUES(:nome,:id_utente)";
+        $insertPlayer = "INSERT INTO tesserati(id_squadra,id_calciatore) VALUES(:id_squadra,:id_calciatore)";
+        $stmt = $pdo->prepare($insertTeam);
+        $stmt->bindparam(":nome",$nome,PDO::PARAM_STR);
+        $stmt->bindparam(":id_utente",$id_utente,PDO::PARAM_INT);
+        if($stmt->execute()){
+            $id_squadra = $pdo->lastInsertId();
+            foreach ($calciatori as $value) {
+                $stmtP = $pdo->prepare($insertPlayer);
+                $stmt->bindparam(":id_squadra",$id_squadra,PDO::PARAM_INT);
+                $stmt->bindparam(":id_calciatore",$value,PDO::PARAM_INT);
+                        
+            }
+        }
+        return ;
+    }
+
+
 
 }
 
@@ -252,7 +273,16 @@ class JSON {
     private $squadra;
     private $giornate = [];
     private $json = [];
-
+    public $methods = [
+        "utenti" => [
+            "select" => "utenti::selectUtente",
+        ],
+        "squadre" => [
+            "select" => "squadre::selectSquadra",
+            "insert" => "squadre::insertSquadra",
+        ],
+        "all" => ""
+    ];
 
     private function setUtente($id_utente){
         $this->utente = utenti::selectUtente($id_utente);
