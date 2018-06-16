@@ -188,8 +188,9 @@ var App = (function() {
             var saveTeam = document.getElementById('saveTeam');
             if (saveTeam) {
                 saveTeam.addEventListener('click', function() {
-                    var team = editor.getNameTeam();
-                    ajaxCall('http://localhost/php-test/fantacalcio/json.php', team, render.homePagePost);
+                    var team = editor.getTeam();
+                    ajaxCall('json.php', JSON.stringify(team), render.homePagePost);
+                    console.log(team);
                 });
             }
         });
