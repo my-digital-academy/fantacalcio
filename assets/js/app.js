@@ -33,20 +33,21 @@ var Render = function() {
                                 <option name="role">Centrocampista</option>
                                 <option name="role">Attaccante</option>
                             </select>
-                            <button class="btn btn-block btn-fanta mt-4">Aggiungi</button>
+                            <button class="btn btn-block btn-fanta mt-4" id="addPlayer">Aggiungi</button>
                         </form>
                     </div>
                     <div class="col-lg-6 d-flex flex-column" id="recordTeam">
                         <h3></h3>
                         <div>
-                            <ul class="list-group list-group-flush list-player">
-
-                            </ul>
+                            <ul class="list-group list-group-flush list-player"></ul>
                         </div>
                     </div>
                 </div>
             </div>
             `;
+        },
+        homePagePost: function() {
+            main.innerHTML = `<h1>Nuova pagina</h1>`
         }
     }
 };
@@ -60,8 +61,20 @@ var Render = function() {
  * 
  */
 var Editor = function() {
-    var tesserati = [];
-    var player;
+    // data team
+    var team = {
+        name: {
+            table: 'squadre',
+            query: 'insert',
+	        data: ''
+        },
+        player: {
+            table: 'calciatori',
+            query: 'insert',
+	        data: []
+        }
+    };
+		
 
     return {
         getNameTeam: function() {
@@ -71,28 +84,42 @@ var Editor = function() {
             var h3 = document.querySelector('#recordTeam h3');
             // add value
             h3.textContent = `${nameTeam.value}`;
+            // save data
+            team.name.data = nameTeam.value;
         },
 
         getPlayer: function(player) {
             // select list player
             var listPlayer = document.querySelector('.list-player');
-            // push array 
-            tesserati.push(player);
-            for (var i = 0; i < tesserati.length; i++) {
+            // save data
+            team.player.data.push(player);
+            // output list player
+            for (var i = 0; i < team.player.data.length; i++) {
                 player = `
                 <li class="list-group-item">
                     <div class="d-flex align-items-center player-full-name">
                         <i class="fas fa-user-tie fa-2x"></i>
-                        <p>${tesserati[i].cognome} ${tesserati[i].nome}</p>
+                        <p>${team.player.data[i].cognome} ${team.player.data[i].nome}</p>
                     </div>
                     <div class="d-flex align-items-center player-role">
                         <i class="fas fa-futbol fa-2x"></i>
-                        <p>${tesserati[i].posizione}</p>
+                        <p>${team.player.data[i].posizione}</p>
                     </div>
                 </li>
                 `;
             }
             listPlayer.innerHTML += player;
+            // add button save
+            if (team.player.data.length == 3 ) {
+                listPlayer.innerHTML += `<button class="btn btn-block btn-fanta mt-4" id="saveTeam">Salva squadra</button>`;
+                // disable add player button
+                var addPlayer = document.getElementById('addPlayer');
+                addPlayer.setAttribute('disabled', ''); 
+            }
+        },
+
+        getTeam: function() {
+            return team;
         }
     }
 };
@@ -154,6 +181,17 @@ var App = (function() {
             player.nome = namePlayer.value;
             player.posizione = role.value;
             editor.getPlayer(player);
+            namePlayer.value = '';
+            surnamePlayer.value = '';
+            role.value = '';
+            // event save team
+            var saveTeam = document.getElementById('saveTeam');
+            if (saveTeam) {
+                saveTeam.addEventListener('click', function() {
+                    var team = editor.getNameTeam();
+                    ajaxCall('http://localhost/php-test/fantacalcio/json.php', team, render.homePagePost);
+                });
+            }
         });
     });
 })();
