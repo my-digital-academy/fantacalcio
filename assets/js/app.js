@@ -6,11 +6,19 @@
   * 
 */
 var Render = function() {
+    // data players
+    var players = {
+            table: 'calciatori',
+            query: 'select',
+            data: []
+        };
+
     // select tag main
     var main = document.querySelector('main');
     
     return {
         homePage: function() {
+            // create page
             main.innerHTML = `
             <div class="container-fluid py-4">
                 <div class="row">
@@ -23,12 +31,7 @@ var Render = function() {
                         <h4>Inserisci giocatore</h4>
                         <form action="#" id="formPlayer">
                             <label class="col-form-label">Calciatore</label>
-                            <select class="form-control" name="role" id="rolePlayer" disabled>
-                                <option>Portiere</option>
-                                <option>Difensore</option>
-                                <option>Centrocampista</option>
-                                <option>Attaccante</option>
-                            </select>
+                            <select class="form-control" name="role" id="players" disabled></select>
                             <button class="btn btn-block btn-fanta mt-4" id="addPlayer">Aggiungi</button>
                         </form>
                     </div>
@@ -42,8 +45,26 @@ var Render = function() {
             </div>
             `;
         },
-        homePagePost: function() {
-            main.innerHTML = `<h1>Nuova pagina</h1>`
+
+        getObjPlayers: function() {
+            return players;
+        },
+
+        getPlayers: function(playerList) {
+            // select
+            var select = document.getElementById('players');
+            // save data
+            players.data.push(playerList);
+            for (var i = 0; i < players.data.length; i++) {
+                playerList = `
+                <option name="role">${players.data[i].surname} ${players.data[i].name}, ${players.data[i].role}</option>
+                `
+                select.innerHTML += playerList;
+            }
+        },
+
+        teamPage: function() {
+            main.innerHTML = `<h1>Squadra</h1>`
         }
     }
 };
@@ -65,7 +86,7 @@ var Editor = function() {
 	        data: ''
         },
         player: {
-            table: 'calciatori',
+            table: 'tesserati',
             query: 'insert',
 	        data: []
         }
@@ -137,10 +158,25 @@ var App = (function() {
 
         // render home page
         render.homePage();
+        // ajax call for players
+        var players = render.getObjPlayers();
+        ajaxCall('json.php', JSON.stringify(players), test);
+        // test function
+        function test(param) {
+            var json = JSON.parse(param);
+            // get players obj
+            var playersList = {};
+            // get values
+            for (var i = 0; i < json.calciatori.length; i++) {
+                playersList.surname = json.calciatori[i].cognome;
+                playersList.name = json.calciatori[i].nome;
+                playersList.role = json.calciatori[i].posizione;
+                render.getPlayers(playersList);
+            }
+        }
 
         // event form name team
         var formTeam = document.getElementById('formTeam');
-        var formInputDisabled = document.querySelectorAll('#formPlayer input');
         var formSelectDisabled = document.querySelector('#formPlayer select');
         formTeam.addEventListener('keyup', function(e) {
             // select element
@@ -149,20 +185,15 @@ var App = (function() {
             recordTeam.classList.add('home-record');
             // editor home page
             editor.getNameTeam();
-            for (var i = 0; i < formInputDisabled.length; i++) {
-                formInputDisabled[i].removeAttribute('disabled');
-            }
+            // disabled
             formSelectDisabled.removeAttribute('disabled');
             if (e.target.value == '') {
                 recordTeam.classList.remove('home-record');
-                for (var i = 0; i < formInputDisabled.length; i++) {
-                formInputDisabled[i].setAttribute('disabled', '');
-                }
                 formSelectDisabled.setAttribute('disabled', '');
             }
         });
 
-        //event form player
+/*         //event form player
         var formPlayer = document.getElementById('formPlayer')
         formPlayer.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -185,7 +216,7 @@ var App = (function() {
             if (saveTeam) {
                 saveTeam.addEventListener('click', function() {
                     var team = editor.getTeam();
-                    ajaxCall('prove.php', JSON.stringify(team), scrivi);
+                    ajaxCall('json.php', JSON.stringify(team), scrivi);
                     
 
                     function scrivi(a){
@@ -193,6 +224,6 @@ var App = (function() {
                     }
                 });
             }
-        });
+        }); */
     });
 })();

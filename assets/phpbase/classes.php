@@ -213,6 +213,17 @@ class calciatori implements \jsonSerializable{
         return $lista;
     }
 
+    static function selectAllCalciatori(){
+        $lista = [];
+        $pdo = self::connetti();
+        $select = "SELECT * FROM calciatori";
+        $stmt = $pdo->query($select);
+        if($stmt->execute()){
+            $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "calciatori");
+        }
+        return $lista;
+    }
+
 }
 
 class giornate implements \jsonSerializable{
@@ -269,11 +280,8 @@ class giornate implements \jsonSerializable{
 class JSON {
     use connection;
 
-    private $utente;
-    private $squadra;
-    private $giornate = [];
     private $json = [];
-    public $methods = [
+    const METHODS = [
         "utenti" => [
             "select" => "utenti::selectUtente",
         ],
@@ -281,36 +289,29 @@ class JSON {
             "select" => "squadre::selectSquadra",
             "insert" => "squadre::insertSquadra",
         ],
-        "all" => ""
+        "calciatori" => [
+            "select" => "calciatori::selectAllCalciatori",
+        ],
+        "all" => [
+            "select " => '$this->setJson',
+        ]
     ];
 
-    private function setUtente($id_utente){
-        $this->utente = utenti::selectUtente($id_utente);
-    }
-    
-    private function setSquadra($id_utente){
-        $this->squadra = squadre::selectSquadra($id_utente);
-    }
-
-    private function setGiornate($id_utente){
-        $this->giornate = giornate::selectGiornate($id_utente);
-    }
-
-    private function setJson(){
-        $this->json['utente'] = $this->utente;
-        $this->json['squadra'] = $this->squadra;
-        $this->json['giornate'] = $this->giornate;
-    }
-
-    private function setObj($id_utente){
-        $this->setUtente($id_utente);
-        $this->setSquadra($id_utente);
-        $this->setGiornate($id_utente);
-        $this->setJson();
+    private function setJson($id_utente){
+        $this->json['utente'] = utenti::selectUtente($id_utente);
+        $this->json['squadra'] = squadre::selectSquadra($id_utente);
+        $this->json['giornate'] = giornate::selectGiornate($id_utente);
     }
 
     public function getJson($id_utente){
-        $this->setObj($id_utente);
+        $this->setJson($id_utente);
+
         return json_encode($this->json, JSON_PRETTY_PRINT);
+    }
+
+    static function analizeRequest($request){
+        $method = self::methods[$request['table']][$request["query"]];
+        
+        return $method;
     }
 }
