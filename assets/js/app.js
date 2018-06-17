@@ -161,18 +161,21 @@ var App = (function() {
         // ajax call for players
         var players = render.getObjPlayers();
         ajaxCall('json.php', JSON.stringify(players), test);
+
+
         // test function
         function test(param) {
             var json = JSON.parse(param);
             // get players obj
             var playersList = {};
             // get values
-            for (var i = 0; i < json.calciatori.length; i++) {
-                playersList.surname = json.calciatori[i].cognome;
-                playersList.name = json.calciatori[i].nome;
-                playersList.role = json.calciatori[i].posizione;
+            for (var i = 0; i < json.length; i++) {
+                playersList.surname = json[i].cognome;
+                playersList.name = json[i].nome;
+                playersList.role = json[i].posizione;
                 render.getPlayers(playersList);
             }
+            
         }
 
         // event form name team

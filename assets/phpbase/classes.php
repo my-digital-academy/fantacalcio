@@ -216,7 +216,7 @@ class calciatori implements \jsonSerializable{
     static function selectAllCalciatori(){
         $lista = [];
         $pdo = self::connetti();
-        $select = "SELECT * FROM calciatori";
+        $select = "SELECT * FROM calciatori LIMIT 10";
         $stmt = $pdo->query($select);
         if($stmt->execute()){
             $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "calciatori");
@@ -310,7 +310,7 @@ class JSON {
     }
 
     static function analizeRequest($request){
-        $method = self::methods[$request['table']][$request["query"]];
+        $method = self::METHODS[$request['table']][$request["query"]];
         
         return $method;
     }
