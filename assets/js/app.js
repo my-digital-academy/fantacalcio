@@ -57,7 +57,7 @@ var Render = function() {
             players.data.push(playerList);
             for (var i = 0; i < players.data.length; i++) {
                 playerList = `
-                <option name="role">${players.data[i].surname} ${players.data[i].name}, ${players.data[i].role}</option>
+                <option name="role">${players.data[i].surname}, ${players.data[i].role}</option>
                 `
                 select.innerHTML += playerList;
             }
@@ -166,14 +166,9 @@ var App = (function() {
         // test function
         function test(param) {
             var json = JSON.parse(param);
-            // get players obj
-            var playersList = {};
-            // get values
+            var select = document.getElementById('players');
             for (var i = 0; i < json.length; i++) {
-                playersList.surname = json[i].cognome;
-                playersList.name = json[i].nome;
-                playersList.role = json[i].posizione;
-                render.getPlayers(playersList);
+                select.innerHTML += "<option>" + json[i].cognome + ", " + json[i].posizione + "</option>";
             }
             
         }

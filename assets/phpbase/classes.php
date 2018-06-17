@@ -216,7 +216,7 @@ class calciatori implements \jsonSerializable{
     static function selectAllCalciatori(){
         $lista = [];
         $pdo = self::connetti();
-        $select = "SELECT * FROM calciatori LIMIT 10";
+        $select = "SELECT * FROM calciatori ORDER BY posizione DESC, cognome ASC";
         $stmt = $pdo->query($select);
         if($stmt->execute()){
             $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "calciatori");

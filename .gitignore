@@ -73,7 +73,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #Prova
-utils.php
+assets/phpbase/utils.php
 
 
 # End of https://www.gitignore.io/api/linux,macos,windows,visualstudiocode

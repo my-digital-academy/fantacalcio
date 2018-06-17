@@ -2,6 +2,7 @@
 
     include("assets/phpbase/classes.php");
 
+
     //Get request data of AjaxCall
     $request = file_get_contents('php://input');
     //Transform requested data into array
@@ -14,7 +15,7 @@
         $json_response = $json_response();
     }
     else{
-        $json_response = $json_response($request_data['data'][0]);
+        $json_response = $json_response($request['data'][0]);
     }
     //Response
     echo json_encode($json_response);
