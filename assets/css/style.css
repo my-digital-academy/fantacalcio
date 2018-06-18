@@ -103,7 +103,7 @@ button:focus {
 }
 
 .form-control:focus {
-    border: 2px solid #b30506 !important;
+    border: 2px solid #0b5f91 !important;
 }
 
 .list-player p {
@@ -111,3 +111,21 @@ button:focus {
     padding: 15px;
 }
 
+/*------------------TEAM PAGE----------------*/
+
+.team-page h2 {
+    text-align: center;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.team-page h2::after {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 2px;
+    background-color: #b30506;
+    margin: 5px auto;
+    
+}

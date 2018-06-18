@@ -126,9 +126,12 @@ class squadre implements \JsonSerializable{
         $stmt->bindParam(":id_utente",$id_utente,PDO::PARAM_INT);
         $stmt->execute();
         $squadra = new squadre();
-        $squadra->setAll($stmt->fetch(PDO::FETCH_ASSOC));
+        if($stmt->rowCount() > 0){
+            $squadra->setAll($stmt->fetch(PDO::FETCH_ASSOC));
+        }
         return $squadra;
     }
+    
     static function insertSquadra($nome,$id_utente,$calciatori){
         $pdo = self::connetti();
         $insertTeam = "INSERT INTO squadre(nome,id_utente) VALUES(:nome,:id_utente)";
@@ -296,7 +299,7 @@ class JSON {
             "select" => "calciatori::selectAllCalciatori",
         ],
         "all" => [
-            "select " => '$this->setJson',
+            "select" => 'all',
         ]
     ];
 
@@ -308,8 +311,8 @@ class JSON {
 
     public function getJson($id_utente){
         $this->setJson($id_utente);
-
-        return json_encode($this->json, JSON_PRETTY_PRINT);
+        
+        return $this->json;
     }
 
     static function analizeRequest($request){

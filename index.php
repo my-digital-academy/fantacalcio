@@ -34,19 +34,16 @@
             <div class="collapse navbar-collapse justify-content-center" id="navMobile">
                 <ul class="nav navbar-nav">
                     <li class="nav-item nav-fanta-item">
-                        <a class="nav-link" href="#" id="home">Home</a>
+                        <a class="nav-link" href="#" id="squadra">Team</a>
                     </li>
                     <li class="nav-item nav-fanta-item">
-                        <a class="nav-link" href="#">Squadra</a>
+                        <a class="nav-link" href="#" id="formazione">Formazione</a>
                     </li>
                     <li class="nav-item nav-fanta-item">
-                        <a class="nav-link" href="#">Formazione</a>
+                        <a class="nav-link" href="#" id="risultati">Risultati</a>
                     </li>
                     <li class="nav-item nav-fanta-item">
-                        <a class="nav-link" href="#">Risultati</a>
-                    </li>
-                    <li class="nav-item nav-fanta-item">
-                        <a class="nav-link" href="#">Classifica</a>
+                        <a class="nav-link" href="#" id="classifica">Classifica</a>
                     </li>
                     <li class="nav-item nav-fanta-item">
                         <a class="nav-link logout" href="logout.php">Esci</a>
