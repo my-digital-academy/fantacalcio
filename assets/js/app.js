@@ -84,58 +84,55 @@ var Render = function() {
 var Editor = function() {
     // data my team
     var myTeam = {
-        name: {
             table: 'squadre',
             query: 'insert',
-	        data: ''
-        },
-        player: {
-            table: 'tesserati',
-            query: 'insert',
-	        data: []
-        }
-    };
-		
+            data: []
+        };
+        
+    var myTeamObj = {
+            data: []
+        };
 
     return {
         getNameTeam: function() {
-            // select input value
+            // name team
             var nameTeam = document.getElementById('nameTeam');
             // select h3
             var h3 = document.querySelector('#recordTeam h3');
             // add value
             h3.textContent = `${nameTeam.value}`;
             // save data
-            myTeam.name.data = nameTeam.value;
+            myTeam.data[0] = nameTeam.value;
         },
 
-        getPlayer: function(player) {
+        getPlayer: function(player, playerObj) {
             // select list player
             var listPlayer = document.querySelector('.list-player');
             // save data
-            myTeam.player.data.push(player);
+            myTeam.data.push(player);
+            myTeamObj.data.push(playerObj);
             // output list player
-            for (var i = 0; i < myTeam.player.data.length; i++) {
+            for (var i = 0; i < myTeamObj.data.length; i++) {
                 player = `
                 <li class="list-group-item">
                     <div class="d-flex align-items-center player-full-name">
                         <i class="fas fa-user-tie fa-2x"></i>
-                        <p>${myTeam.player.data[i].cognome}</p>
+                        <p>${myTeamObj.data[i].cognome}</p>
                     </div>
                     <div class="d-flex align-items-center player-role">
                         <i class="fas fa-futbol fa-2x"></i>
-                        <p>${myTeam.player.data[i].posizione}</p>
+                        <p>${myTeamObj.data[i].posizione}</p>
                     </div>
                 </li>
                 `;
             }
             listPlayer.innerHTML += player;
             // add button save
-            if (myTeam.player.data.length == 3 ) {
+            if (myTeamObj.data.length == 3 ) {
                 listPlayer.innerHTML += `<button class="btn btn-block btn-fanta mt-4" id="saveTeam">Salva squadra</button>`;
                 // disable add player button
                 var addPlayer = document.getElementById('addPlayer');
-                addPlayer.setAttribute('disabled', ''); 
+                addPlayer.setAttribute('disabled', '');
             }
         },
 
@@ -167,6 +164,9 @@ var App = (function() {
         function getID(data) {
             var json = JSON.parse(data);
             console.log(json);
+            // id user
+            var idUser = json.utente.id;
+            // id team
             var id = json.squadra.id;
             // check id 
             if ( id == undefined) {
@@ -208,18 +208,21 @@ var App = (function() {
                     var player = document.querySelector(`option[value='${playerID.value}']`);
                     var playerText = player.textContent;
                     var playerArr = playerText.split(',');
-                    // create obj player
-                    var player = {};
+                    // create array player for call ajax
+                    var player;
+                    // create obj player for list
+                    var playerObj = {};
                     // add value
-                    player.cognome = playerArr[0];
-                    player.posizione = playerArr[1];
-                    editor.getPlayer(player);
-                    // empty array
+                    player = playerID.value;
+                    playerObj.cognome = playerArr[0];
+                    playerObj.posizione = playerArr[1];
+                    editor.getPlayer(player, playerObj);
                     // event save team
                     var saveTeam = document.getElementById('saveTeam');
                     if (saveTeam) {
                         saveTeam.addEventListener('click', function() {
                             var myTeam = editor.getObjTeam();
+                            myTeam.data.splice(1,0,idUser); 
                             ajaxCall('json.php', JSON.stringify(myTeam), redirectTeamPage);
                             // redirect team page
                             function redirectTeamPage(){

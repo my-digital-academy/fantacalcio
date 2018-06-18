@@ -131,24 +131,30 @@ class squadre implements \JsonSerializable{
         }
         return $squadra;
     }
-    
-    static function insertSquadra($nome,$id_utente,$calciatori){
+
+    static function insertSquadra($data_array){
+        $nome_squadra = (string)$data_array[0];
+        $id_utente = (int)$data_array[1];
+        $id_squadra = 0;
+
         $pdo = self::connetti();
         $insertTeam = "INSERT INTO squadre(nome,id_utente) VALUES(:nome,:id_utente)";
         $insertPlayer = "INSERT INTO tesserati(id_squadra,id_calciatore) VALUES(:id_squadra,:id_calciatore)";
         $stmt = $pdo->prepare($insertTeam);
-        $stmt->bindparam(":nome",$nome,PDO::PARAM_STR);
+        $stmt->bindparam(":nome",$nome_squadra,PDO::PARAM_STR);
         $stmt->bindparam(":id_utente",$id_utente,PDO::PARAM_INT);
         if($stmt->execute()){
-            $id_squadra = $pdo->lastInsertId();
-            foreach ($calciatori as $value) {
+            $id_squadra = (int)$pdo->lastInsertId();
+            for ($i=2; $i < count($data_array); $i++) {
                 $stmtP = $pdo->prepare($insertPlayer);
-                $stmt->bindparam(":id_squadra",$id_squadra,PDO::PARAM_INT);
-                $stmt->bindparam(":id_calciatore",$value,PDO::PARAM_INT);
-                        
+                $stmtP->bindparam(":id_squadra",$id_squadra,PDO::PARAM_INT);
+                $stmtP->bindparam(":id_calciatore",$data_array[$i],PDO::PARAM_INT);
+                $stmtP->execute();
             }
+            $json = new JSON();
+            $json->getJson($id_utente);
+            return $json;
         }
-        return ;
     }
 
 
