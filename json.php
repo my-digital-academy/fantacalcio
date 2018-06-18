@@ -17,5 +17,10 @@
     else{
         $json_response = $json_response($request['data'][0]);
     }
+    //This method controls if response is json
+    if(gettype($json_response) != "string"){
+        $json_response = json_encode($json_response);
+    }
     //Response
-    echo json_encode($json_response);
+    echo $json_response;
+    

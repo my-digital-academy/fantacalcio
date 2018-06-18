@@ -160,17 +160,13 @@ var App = (function() {
         render.homePage();
         // ajax call for players
         var players = render.getObjPlayers();
-        ajaxCall('json.php', JSON.stringify(players), test);
 
+        ajaxCall('json.php', JSON.stringify(players), getOptions);
 
         // test function
-        function test(param) {
-            var json = JSON.parse(param);
-            var select = document.getElementById('players');
-            for (var i = 0; i < json.length; i++) {
-                select.innerHTML += "<option>" + json[i].cognome + ", " + json[i].posizione + "</option>";
-            }
-            
+        function getOptions(data) {
+            let select = document.getElementById('players');
+            select.innerHTML = data;
         }
 
         // event form name team

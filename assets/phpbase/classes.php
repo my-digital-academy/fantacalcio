@@ -213,15 +213,18 @@ class calciatori implements \jsonSerializable{
         return $lista;
     }
 
+    //This method returns a string with options of a select
     static function selectAllCalciatori(){
-        $lista = [];
+        $optionsString = "";
         $pdo = self::connetti();
         $select = "SELECT * FROM calciatori ORDER BY posizione DESC, cognome ASC";
         $stmt = $pdo->query($select);
         if($stmt->execute()){
-            $lista = $stmt->fetchAll(PDO::FETCH_CLASS, "calciatori");
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $optionsString .= "<option value='" . $row['id'] ."'>" . $row['cognome'] . ", " . $row['posizione'] . "</option>";
+            }
         }
-        return $lista;
+        return $optionsString;
     }
 
 }
