@@ -146,13 +146,14 @@ class squadre implements \JsonSerializable{
         if($stmt->execute()){
             $id_squadra = (int)$pdo->lastInsertId();
             for ($i=2; $i < count($data_array); $i++) {
+                $id_calciatore = (int)$data_array[$i];
                 $stmtP = $pdo->prepare($insertPlayer);
                 $stmtP->bindparam(":id_squadra",$id_squadra,PDO::PARAM_INT);
-                $stmtP->bindparam(":id_calciatore",$data_array[$i],PDO::PARAM_INT);
+                $stmtP->bindparam(":id_calciatore",$id_calciatore,PDO::PARAM_INT);
                 $stmtP->execute();
             }
             $json = new JSON();
-            $json->getJson($id_utente);
+            $json = $json->getJson($id_utente);
             return $json;
         }
     }

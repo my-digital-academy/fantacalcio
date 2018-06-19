@@ -24,7 +24,7 @@
        }
    }
    else{
-       $json_response = $json_response($request['data'][0]);
+       $json_response = $json_response($request['data']);
    }
    //This method controls if response is json
    if(gettype($json_response) != "string"){
